@@ -208,3 +208,15 @@ gasPriceStep: {
 },
 });
 ```
+
+- Open extension of Keplr wallet in your browser, then right to icon => `Inspect`
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/625e9f8d-49a7-41a2-baf3-620bb37bfc7f)
+  
+- Then a popup will be displayed, then select `Console`
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/919a3da6-609f-449f-b3a7-b74a145ae991)
+
+- Copy content in above text file, then paste to `Console` tab and Press `Enter`
+- A new popup will be displayed, select `Approve` to add `Stride` Rollup chain into your Kelpr wallet.
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/9e108438-4f59-43c9-8364-525cea4d4903)
+
+
