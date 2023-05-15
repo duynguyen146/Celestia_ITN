@@ -58,6 +58,11 @@ SEQUENCER_IP="YOUR_SEQ_IP" # Fill public ip of your sequencer node
 SEQUENCER_ID=$(curl -s http://$SEQUENCER_IP:26657/status | jq -r .result.node_info.id)
 ```
 
+- Download `genesis.json` from sequencer server to fullnode server
+```
+scp username@$SEQUENCER_IP:$HOME/.stride/config/genesis.json $HOME/.stride/config/genesis.json 
+```
+
 - Create systemD service
 ```
 sudo tee /etc/systemd/system/fullnode.service > /dev/null <<EOF
