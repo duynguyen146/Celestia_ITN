@@ -210,29 +210,29 @@ gasPriceStep: {
 ```
 
 - Open extension of Keplr wallet in your browser, then right to icon => `Inspect`
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/625e9f8d-49a7-41a2-baf3-620bb37bfc7f)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/5144605c-caa1-47a9-9946-ba6512dbc4c4)
   
 - Then a popup will be displayed, then select `Console`
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/919a3da6-609f-449f-b3a7-b74a145ae991)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/14ac8cbc-0536-47ae-9c41-7e19ce6957c4)
 
 - Copy content in above text file, then paste to `Console` tab and Press `Enter`
 - A new popup will be displayed, select `Approve` to add `Stride` Rollup chain into your Kelpr wallet.
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/9e108438-4f59-43c9-8364-525cea4d4903)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/7ec1b0de-9c07-4211-9da9-7d06465a0024)
   
 - Finally the rollup chain `Stride` has been added to Kelpr wallet, my test wallet is `stride1zqgw9lmkdu2ngsxzlze49ewq8e69yxvs3lct3x` has no balance
 
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/ba24e640-3b5e-4e97-aa66-429ff1ce43d4)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/33ee0f63-db71-4332-bc7d-c0f9f041c882)
   
 - Try to send some tokens by CLI to the wallet `stride1zqgw9lmkdu2ngsxzlze49ewq8e69yxvs3lct3x`, then check balance of the received wallet by CLI
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/8b91c9a2-2c5c-448f-a2de-396e173f1cb3)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/cadd217f-4c4e-4805-904d-0f591ab34c21)
 
 - Check balance of the received wallet on Kelpr
 
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/6f9c4908-2b98-4fc7-bb81-7e614323bcbf)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/6670ddcf-d4c4-413a-82cb-66f55dbacaa4)
 
 - Check rollup chain from rollup explorer https://celestia-rollup-explorer.bharvest.io (Credit to Bharvest team for creating the tool)
 
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/3c075db5-a5ed-404c-9c1a-d9c975ca333e)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/dbb90c90-5e86-4adb-ba80-8f89603a2500)
 
   
 
