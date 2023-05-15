@@ -132,3 +132,79 @@ sudo systemctl restart sequencer
 ```
 sudo journalctl -u sequencer -f -o cat
 ```
+
+### 2.5 Reset Rollup chain `Stride`
+- If you wanna reset the rollup Sequencer, please follow 
+```
+DA_BLOCK_HEIGHT=$(curl -s https://rpc-blockspacerace.pops.one/block | jq -r '.result.block.header.height')
+sed -i.bak -e  "s/rollkit.da_start_height [0-9]* /rollkit.da_start_height $DA_BLOCK_HEIGHT /g; s/\"fee\":[0-9]*,/\"fee\":1000,/g" /etc/systemd/system/sequencer.service
+sudo systemctl daemon-reload
+sudo systemctl restart sequencer
+sleep 10;
+
+
+DA_BLOCK_HEIGHT=$(curl -s https://rpc-blockspacerace.pops.one/block | jq -r '.result.block.header.height')
+sed -i.bak -e  "s/rollkit.da_start_height [0-9]* /rollkit.da_start_height $DA_BLOCK_HEIGHT /g; s/\"fee\":[0-9]*,/\"fee\":100,/g" /etc/systemd/system/sequencer.service
+sudo systemctl daemon-reload
+sudo systemctl restart sequencer
+```
+
+## 3. Connect your rollup chain to Kelpr
+- Expose API and RPC
+```
+sed -i.bak -e 's|^laddr = \"tcp:\/\/.*:\([0-9].*\)57\"|laddr = \"tcp:\/\/0\.0\.0\.0:\157\"|' $HOME/.stride/config/config.toml
+```
+
+- Restart sequencer
+```
+sudo systemctl restart sequencer
+```
+
+- Open a text file, then input below code
+```
+window.keplr.experimentalSuggestChain({
+chainId: "stride_local",
+chainName: "stride rollup",
+rpc: "http://95.216.21.32:26657",
+rest: "http://95.216.21.32:1317",
+bip44: {
+    coinType: 118,
+},
+bech32Config: {
+    bech32PrefixAccAddr: "stride",
+    bech32PrefixAccPub: "stride" + "pub",
+    bech32PrefixValAddr: "stride" + "valoper",
+    bech32PrefixValPub: "stride" + "valoperpub",
+    bech32PrefixConsAddr: "stride" + "valcons",
+    bech32PrefixConsPub: "stride" + "valconspub",
+},
+currencies: [ 
+    { 
+        coinDenom: "STRD", 
+        coinMinimalDenom: "ustrd", 
+        coinDecimals: 6, 
+        coinGeckoId: "ustrd", 
+    }, 
+],
+feeCurrencies: [
+    { 
+        coinDenom: "STRD", 
+        coinMinimalDenom: "ustrd", 
+        coinDecimals: 6, 
+        coinGeckoId: "ustrd", 
+    },
+],
+stakeCurrency: { 
+        coinDenom: "STRD", 
+        coinMinimalDenom: "ustrd", 
+        coinDecimals: 6, 
+        coinGeckoId: "ustrd", 
+},
+coinType: 118,
+gasPriceStep: {
+    low: 0.0,
+    average: 0.025,
+    high: 0.03,
+},
+});
+```
