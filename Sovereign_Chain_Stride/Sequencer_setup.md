@@ -160,13 +160,13 @@ sed -i.bak -e 's|^laddr = \"tcp:\/\/.*:\([0-9].*\)57\"|laddr = \"tcp:\/\/0\.0\.0
 sudo systemctl restart sequencer
 ```
 
-- Open a text file, then input below code
+- Open a text file, then input below code. Remember to replace `YOUR_PUBLIC_IP` to your real public IP
 ```
 window.keplr.experimentalSuggestChain({
 chainId: "stride_local",
 chainName: "stride rollup",
-rpc: "http://95.216.21.32:26657",
-rest: "http://95.216.21.32:1317",
+rpc: "http://YOUR_PUBLIC_IP:26657",
+rest: "http://YOUR_PUBLIC_IP:1317",
 bip44: {
     coinType: 118,
 },
