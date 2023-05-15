@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BlockspaceRace - PFB Transaction</title>
+<link rel="shortcut icon" href="ico/logo.png">
+<style>
+// body {
+//   background-color: #ffffe0;
+// 		}
+
+.content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+		
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 100%
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  margin: 0 auto;
+  //padding: 8px 12px;
+  transition: 0.3s;
+  border: 1px solid #ccc;
+  float: left; 
+  background-color: inherit;
+  outline: none;
+  cursor: pointer;  
+  font-size: 17px;  
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-top: none;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s;
+  // width: 49.1%;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Style the close button */
+.topright {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+}
+.topright:hover {color: red;}
+
+#result {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+  <h1><span style="color: blue; ">BlockspaceRace - PFB Transaction</span></h1>
+   <h2>Kindly select your operation</h2>
+   
+<div class="tab">
+  <button class="tablinks" onclick="showAction(event, 'pfb_transaction')"><h3>PayForBlob</h3></button>
+  <button class="tablinks" onclick="showAction(event, 'shares')"><h3>Namespace Shares</h3></button>
+</div>
+
+<div id="pfb_transaction" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+  
+  <label for="pfb_namespace_id" style="display: flex; margin-top: 10px;"><h3>Namespace ID:</h3></label>
+  <input type="text" id="pfb_namespace_id" name="pfb_namespace_id" style="width: 80%; padding: 10px; margin-top: auto"><br>
+  
+  <label for="pfb_data" style="display: flex; margin-top: 10px; "><h3>Heximal Data:</h3></label>
+  <input type="text" id="pfb_data" name="pfb_data" style="width: 80%; padding: 10px; margin-top: auto "><br>
+  
+  <label for="pfb_gas" style="display: flex; margin-top: 10px; "><h3>Gas:</h3></label>
+  <input type="text" id="pfb_gas" name="pfb_gas" style="width: 80%; padding: 10px; margin-top: auto "><br>
+  
+  <label for="pfb_fee" style="display: flex; margin-top: 10px; "><h3>Fee:</h3></label>
+  <input type="text" id="pfb_fee" name="pfb_fee" style="width: 80%; padding: 10px; margin-top: auto "><br>
+    
+  <button type="submit" id="pfb_button" style="display: flex; margin-top: 40px; padding: 10px; width: 120px; font-size: 16px; justify-content: center; align-items: center;"><b>SUBMIT</b></button>
+</div>
+
+<div id="shares" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+  
+  <label for="shares_namespace_id" sstyle="display: flex; margin-top: 10px;"><h3>Namespace ID:</h3></label>
+  <input type="text" id="shares_namespace_id" name="shares_namespace_id" style="width: 80%; padding: 10px; margin-top: auto"><br>
+  
+  <label for="blockheight" style="display: flex; margin-top: 10px; "><h3>Block Height:</h3></label>
+  <input type="text" id="blockheight" name="blockheight" style="width: 80%; padding: 10px; margin-top: auto "><br>
+  
+  <button type="submit" id="shares_button" style="display: flex; margin-top: 40px; padding: 10px; width: 120px; font-size: 16px; justify-content: center; align-items: center;"><b>SUBMIT</b></button>
+</div>
+
+<div id="result" class="tab">
+  <button class="tablinks" style="width: 100%;"><h3>Result</h3></button>
+</div>
+
+<div id="pfb_submission_info" class="tabcontent"></div>
+<div id="namespaceshare_info" class="tabcontent"></div>
+<div id="namespaceshare_rawinfo" class="tabcontent"></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+function showAction(evt, operation) {
+  var i, tabcontent, tablinks;
+  document.getElementById("result").style.display = "none";
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(operation).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Submit PFB Transaction
+document.getElementById("pfb_button").addEventListener("click", (event) => {
+  event.preventDefault();
+  
+  
+  const namespaceId = document.getElementById("pfb_namespace_id").value;
+  const url = `https://blockspacerace.gei-explorer.xyz/submit_pfb`;
+  
+  const pfb_data = document.getElementById("pfb_data").value;
+  // Check input data is heximal format
+  const hexRegex = /^[0-9A-Fa-f]+$/;
+  if (! hexRegex.test(pfb_data)) {
+	alert("Input is not a valid hex string");  
+	return;
+  } 
+   
+  // Convert input string to hexa data
+  // const encoder = new TextEncoder();
+  // const data = encoder.encode(pfb_data);
+  // const hex = Array.prototype.map.call(data, x => ('00' + x.toString(16)).slice(-2)).join('');
+  
+  const pfb_gas = parseInt(document.getElementById("pfb_gas").value);
+  const pfb_fee = parseInt(document.getElementById("pfb_fee").value);
+  // Check gas and fee is empty or not   
+  if ( isNaN(pfb_gas) || isNaN(pfb_fee)) {
+     alert("Warning: Gas or fee value is not set.");
+	 return;  
+ }
+  
+  const payload = { namespace_id: namespaceId, data: pfb_data, gas_limit: pfb_gas, fee: pfb_fee };  
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+    .then(response => {
+	// const timestamp = response.headers.get('Date');
+    //console.log(`Response received at ${timestamp}`);
+	console.log(response)
+    return response.json();
+	
+	})
+    .then(data => {
+      console.log(data);
+	  const tx_info = JSON.parse(JSON.stringify(data));
+	  const height = tx_info["height"];
+	  const txhash = tx_info["txhash"];
+	  const currentDatetime = new Date().toLocaleString('en-US', {day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+  
+	document.getElementById("result").style.display = "block";
+	document.getElementById("pfb_submission_info").style.display = "block";	  
+    document.getElementById("pfb_submission_info").innerHTML = `
+        <p><br><span style="font-size: 20px; margin-top: 50px; margin-left: 10px"><b> Namespace id :</b></span><code><span style="color: blue; font-size: 20px; margin-left: 10px" ><b>${namespaceId}</b></span></code><p>
+		<p><span style="font-size: 20px; margin-left: 10px"><b>Block height :</b></span><code><span style="color: blue; font-size: 20px; margin-left: 10px"><b>${height}</b></span></code><p>
+		<p><span style="font-size: 20px; margin-left: 10px"><b>Time : </b></span><code><span style="color: blue; font-size: 20px; margin-left: 10px"><b>${currentDatetime}</b></span></code><p>
+		<p><span style="font-size: 20px; margin-left: 10px"><b>Transaction link :</b></span><b><a href="https://testnet.mintscan.io/celestia-incentivized-testnet/txs/${txhash}" style="color: blue; margin-left: 10px; font-size: 20px;">Link</a></b></span><p>
+		`
+    })
+    .catch(error => console.error(error));
+	
+});
+
+
+// Retrive Submitted Data and Shares based on Namespace ID at given block height
+document.getElementById("shares_button").addEventListener("click", (event) => {
+  event.preventDefault();
+  const namespaceId_share = document.getElementById("shares_namespace_id").value;
+  const blockheight = document.getElementById("blockheight").value;
+  
+  // url to retrive namespaceshare raw data
+  const url = `https://blockspacerace.gei-explorer.xyz/namespaced_shares/${namespaceId_share}/height/${blockheight}`;
+  
+  // url to retrive submitted raw data
+  const data_url=`https://blockspacerace.gei-explorer.xyz/namespaced_data/${namespaceId_share}/height/${blockheight}`;
+  
+  Promise.all([
+	fetch(url).then(response => response.json()),
+	fetch(data_url).then(response => response.json())
+	])
+	.then(([data1, data2]) => {	
+	const raw_shares = JSON.parse(JSON.stringify(data1)); // raw of namespace share	
+	const raw_submitted_data = JSON.parse(JSON.stringify(data2)); // raw of submitted data
+	
+	// Convert submitted raw data from base64 to hexa
+	const base64_submitted_data = raw_submitted_data["data"][0];
+	const hex_submitted_data = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Base64.parse(base64_submitted_data));
+	
+	document.getElementById("result").style.display = "block";
+	document.getElementById("namespaceshare_info").style.display = "block";
+	
+	document.getElementById("namespaceshare_info").innerHTML = `	
+		<h2><span style="color: red">Your info:</span></h2>
+		<p><h3><b><span style="margin-left: 30px;">Namespace ID: </span></b><code><span style="color: blue; font-size: 20px; margin-left: 10px;"><b>${namespaceId_share}</b></span></code></h3><p>
+		<p><h3><b><span style="margin-left: 30px;">Block height: </span></b><code><span style="color: blue; font-size: 20px; margin-left: 10px;"><b>${blockheight}</b></span></code></h3><p>
+		<p><h3><b><span style="margin-left: 30px;">Submitted hexa data: </span></b><code><span style="color: blue; font-size: 20px; margin-left: 10px;"><b>${hex_submitted_data}</b></span></code></h3><p>
+		`
+	document.getElementById("namespaceshare_rawinfo").style.display = "block";
+	document.getElementById("namespaceshare_rawinfo").innerHTML = `	
+        <h2><span style="color: red">Detail Namespaceshare Data:</span></h2>
+        <textarea name="response" style="width: 80%; height: 200px; border: 1px solid #ccc; overflow: auto; margin-left: 30px;">
+          ${JSON.stringify(raw_shares, null, 2)}
+        </textarea>`;
+
+})
+.catch(error => console.error(error)); 
+});
+</script>
+
+</body>
+</html>
