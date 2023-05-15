@@ -218,5 +218,17 @@ gasPriceStep: {
 - Copy content in above text file, then paste to `Console` tab and Press `Enter`
 - A new popup will be displayed, select `Approve` to add `Stride` Rollup chain into your Kelpr wallet.
   ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/9e108438-4f59-43c9-8364-525cea4d4903)
+  
+- Finally the rollup chain `Stride` has been added to Kelpr wallet, my test wallet is `stride1zqgw9lmkdu2ngsxzlze49ewq8e69yxvs3lct3x` has no balance
 
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/ba24e640-3b5e-4e97-aa66-429ff1ce43d4)
+  
+- Try to send some tokens by CLI to the wallet `stride1zqgw9lmkdu2ngsxzlze49ewq8e69yxvs3lct3x`, then check balance of the received wallet by CLI
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/8b91c9a2-2c5c-448f-a2de-396e173f1cb3)
+
+- check balance of the received wallet on Kelpr
+
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/6f9c4908-2b98-4fc7-bb81-7e614323bcbf)
+
+  
 
