@@ -1,6 +1,6 @@
 ## 1. Introduction
 - Deploy a sovereign rollup chain on top of Celestia Blockspacerace network is one of bonus tasks of Celestia ITN program.
-- In this part, i will show how to convert and build a rollup chain from a existing Cosmos SDK L1 - `Stride` 
+- In this part, i will show how to convert and deploy a sequencer of a rollup chain from a existing Cosmos SDK L1 - `Stride` 
 
 ## 2. Deployment
 ### 2.1 Install Prerequisites
