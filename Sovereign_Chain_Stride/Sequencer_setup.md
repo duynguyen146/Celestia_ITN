@@ -28,7 +28,7 @@ cd $HOME
 git clone https://github.com/Stride-Labs/stride.git
 cd stride
 git checkout v9.0.0
-go mod edit -replace github.com/cosmos/cosmos-sdk=github.com/rollkit/cosmos-sdk@v0.45.10-rollkit-v0.7.3-no-fraud-proofs
+go mod edit -replace github.com/cosmos/cosmos-sdk=github.com/rollkit/cosmos-sdk@v0.46.7-rollkit-v0.7.3-no-fraud-proofs
 go mod edit -replace github.com/tendermint/tendermint=github.com/celestiaorg/tendermint@v0.34.22-0.20221202214355-3605c597500d
 go mod tidy
 go mod download
@@ -88,7 +88,7 @@ BASE_URL="http://localhost:26659" # If DA node is on different server with seque
 NAMESPACE="YOUR_NAME_SPACE_ID" 
 ROLLKIT_BLOCKTIME="3s" 
 ROLLKIT_DA_BLOCKTIME="12s"
-DA_BLOCK_HEIGHT=$(curl https://rpc-blockspacerace.pops.one/block | jq -r '.result.block.header.height')
+DA_BLOCK_HEIGHT=$(curl -s https://rpc-blockspacerace.pops.one/block | jq -r '.result.block.header.height')
 ```
 
 - Create systemD service
