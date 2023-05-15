@@ -28,3 +28,107 @@ cd $HOME
 git clone https://github.com/Stride-Labs/stride.git
 cd stride
 git checkout v9.0.0
+go mod edit -replace github.com/cosmos/cosmos-sdk=github.com/rollkit/cosmos-sdk@v0.45.10-rollkit-v0.7.3-no-fraud-proofs
+go mod edit -replace github.com/tendermint/tendermint=github.com/celestiaorg/tendermint@v0.34.22-0.20221202214355-3605c597500d
+go mod tidy
+go mod download
+make install
+```
+
+### 2.4 Setup Rollup chain `Stride`
+- Initialize the rollup chain
+```
+CHAIN_ID="stride_local"
+MONIKER="sequencer"
+DENOM="ustrd"
+
+strided config keyring-backend test
+strided config chain-id $CHAIN_ID
+
+strided init $MONIKER --chain-id $CHAIN_ID
+```
+
+- Add genesis account
+```
+strided keys add wallet1 --keyring-backend test
+strided keys add wallet2 --keyring-backend test
+```
+
+- Adjust parameter in `genesis.json` following chain information
+```
+jq ".app_state[\"staking\"][\"params\"][\"bond_denom\"]=\"$DENOM\"" $HOME/.stride/config/genesis.json > $HOME/.stride/config/tmp_genesis.json && mv $HOME/.stride/config/tmp_genesis.json $HOME/.stride/config/genesis.json
+
+jq ".app_state[\"crisis\"][\"constant_fee\"][\"denom\"]=\"$DENOM\"" $HOME/.stride/config/genesis.json > $HOME/.stride/config/tmp_genesis.json && mv $HOME/.stride/config/tmp_genesis.json $HOME/.stride/config/genesis.json
+
+jq ".app_state[\"gov\"][\"deposit_params\"][\"min_deposit\"][0][\"denom\"]=\"$DENOM\"" $HOME/.stride/config/genesis.json > $HOME/.stride/config/tmp_genesis.json && mv $HOME/.stride/config/tmp_genesis.json $HOME/.stride/config/genesis.json
+
+jq ".app_state[\"inflation\"][\"params\"][\"mint_denom\"]=\"$DENOM\"" $HOME/.stride/config/genesis.json > $HOME/.stride/config/tmp_genesis.json && mv $HOME/.stride/config/tmp_genesis.json $HOME/.stride/config/genesis.json
+
+jq ".app_state[\"mint\"][\"params\"][\"mint_denom\"]=\"$DENOM\"" $HOME/.stride/config/genesis.json > $HOME/.stride/config/tmp_genesis.json && mv $HOME/.stride/config/tmp_genesis.json $HOME/.stride/config/genesis.json
+
+jq '.consensus_params["block"]["max_gas"]="10000000"' $HOME/.stride/config/genesis.json > $HOME/.stride/config/tmp_genesis.json && mv $HOME/.stride/config/tmp_genesis.json $HOME/.stride/config/genesis.json
+```
+
+- Allocate genesis accounts (cosmos formatted addresses)
+```
+strided add-genesis-account wallet1 100000000000000000000000000${DENOM} --keyring-backend test
+strided add-genesis-account wallet2 100000000000000000000000000${DENOM} --keyring-backend test
+```
+
+- Sign, collect genesis transaction then validate genesis json file
+```
+strided gentx wallet1 1000000000000000000000${DENOM} --keyring-backend test --chain-id $CHAIN_ID
+strided collect-gentxs 
+strided validate-genesis 
+```
+
+- Setup information related to DA node
+```
+BASE_URL="http://localhost:26659" # If DA node is on different server with sequencer node, change `localhost` to `public ip` of DA node
+NAMESPACE="YOUR_NAME_SPACE_ID" 
+ROLLKIT_BLOCKTIME="3s" 
+ROLLKIT_DA_BLOCKTIME="12s"
+DA_BLOCK_HEIGHT=$(curl https://rpc-blockspacerace.pops.one/block | jq -r '.result.block.header.height')
+```
+
+- Create systemD service
+```
+sudo tee /etc/systemd/system/sequencer.service > /dev/null <<EOF
+[Unit]
+Description=Stride Sequencer
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which strided) start --rollkit.aggregator true \
+            --rollkit.block_time ${ROLLKIT_BLOCKTIME} \
+            --rollkit.da_block_time ${ROLLKIT_DA_BLOCKTIME} \
+            --rollkit.da_layer celestia \
+            --rollkit.da_config='{"base_url":"$BASE_URL","timeout":60000000000,"fee":100,"gas_limit":100000}' \
+            --rollkit.namespace_id ${NAMESPACE}  \
+            --rollkit.da_start_height ${DA_BLOCK_HEIGHT} \
+            --p2p.laddr "0.0.0.0:26656" \
+            --rpc.laddr "tcp://0.0.0.0:26657" \
+            --grpc.address "0.0.0.0:9090" \
+            --grpc-web.address "0.0.0.0:9091" \
+            --p2p.seed_mode             
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable sequencer
+```
+
+- Start sequencer node
+```
+sudo systemctl restart sequencer
+```
+
+- Check log of sequencer node
+```
+sudo journalctl -u sequencer -f -o cat
+```
