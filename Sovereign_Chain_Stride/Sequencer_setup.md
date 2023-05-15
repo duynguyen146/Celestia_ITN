@@ -226,9 +226,13 @@ gasPriceStep: {
 - Try to send some tokens by CLI to the wallet `stride1zqgw9lmkdu2ngsxzlze49ewq8e69yxvs3lct3x`, then check balance of the received wallet by CLI
   ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/8b91c9a2-2c5c-448f-a2de-396e173f1cb3)
 
-- check balance of the received wallet on Kelpr
+- Check balance of the received wallet on Kelpr
 
   ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/6f9c4908-2b98-4fc7-bb81-7e614323bcbf)
+
+- Check rollup chain from rollup explorer https://celestia-rollup-explorer.bharvest.io (Credit to Bharvest team for creating the tool)
+
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/3c075db5-a5ed-404c-9c1a-d9c975ca333e)
 
   
 
