@@ -4,9 +4,7 @@
 - If you wanna submit PFB transaction via your own DA node, you have to 
   * Build up your DA node first and expose your gateway of DA node.
   * Edit `URL` link in the file `PFB-transaction.html` point to URL link of your DA node
-    ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/1c529f26-340d-4fe1-870c-edbd668de2b8)
-
-
+    ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/7333af93-8ead-49f0-88cd-5c8961c746fe)
 
 ## B. User guide
 ### 1. Login to [link](https://gei-explorer.xyz/celestia/blockspacerace/PFB-transaction.html).
@@ -15,15 +13,15 @@
 - Select the tab `PayForBlob`.
 - Fill in your `Namespace ID`, `Hexa Data`, expected `gas` and expected `fee`.
 - Click `SUBMIT` button, then wait for moment for submitting and handling of PFB transation on Celestia Network
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/cf343028-2034-41b4-a002-4f6f33fe5172)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/69ac9d6b-2e63-432e-8257-db601b917164)
 
 - System will return result of the transaction
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/5167f2ea-55a2-4272-bd00-48ed1019990a)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/640b55db-2bd9-4af4-beea-a28767eeb630)
 
 
 ### 3. Query Namespace Share at given block height
 - In the tab `Namespace Shares`, kindly fill in your `Namespace ID` and `Given Block Height`.
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/20aed58b-533e-47a1-a3f5-7f1af9fc6356)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/1a39315e-9880-4aab-af1a-86d7f5e61f32)
 
 - Click `SUBMIT` button, then wait a moment for querying. Result will be returned as below
-  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/71cb5dea-cb79-45ae-af99-69e893d58f1a)
+  ![image](https://github.com/duynguyen146/Celestia_ITN/assets/103108055/51ec5a97-a68e-43f5-94ce-5bad47a2e6c1)
